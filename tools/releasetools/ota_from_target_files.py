@@ -257,6 +257,10 @@ A/B OTA specific options
   --max_threads
       Specify max number of threads allowed when generating A/B OTA
 
+  --backup <boolean>
+      Enable or disable the execution of backuptool.sh.
+      Disabled by default.
+
   --vabc_cow_version
       Specify the VABC cow version to be used
 """
@@ -330,6 +334,7 @@ OPTIONS.enable_lz4diff = False
 OPTIONS.vabc_compression_param = None
 OPTIONS.security_patch_level = None
 OPTIONS.max_threads = None
+OPTIONS.backuptool = False
 OPTIONS.vabc_cow_version = None
 
 
@@ -1276,6 +1281,8 @@ def main(argv):
       else:
         raise ValueError("Cannot parse value %r for option %r - only "
                          "integers are allowed." % (a, o))
+    elif o == "--backup":
+      OPTIONS.backuptool = True
     elif o == "--vabc_cow_version":
       if a.isdigit():
         OPTIONS.vabc_cow_version = a
@@ -1330,6 +1337,7 @@ def main(argv):
                                  "vabc_compression_param=",
                                  "security_patch_level=",
                                  "max_threads=",
+                                 "backup=",
                                  "vabc_cow_version=",
                              ], extra_option_handler=[option_handler, payload_signer.signer_options])
   common.InitLogging()
