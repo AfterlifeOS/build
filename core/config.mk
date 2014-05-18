@@ -454,6 +454,7 @@ FIND_LEAVES_EXCLUDES := $(addprefix --prune=, $(SCAN_EXCLUDE_DIRS) .repo .git)
 ifneq ($(AFTERLIFE_BUILD),)
     include vendor/afterlife/config/BoardConfigAfterlife.mk
 endif
+-include vendor/extra/BoardConfigExtra.mk
 
 # The build system exposes several variables for where to find the kernel
 # headers:
