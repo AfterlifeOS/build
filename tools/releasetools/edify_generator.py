@@ -408,6 +408,21 @@ class EdifyGenerator(object):
         assert not entry.slotselect, \
           "Use %s because %s is slot suffixed" % (fn, lst[1])
 
+  def SetPermissionsRecursive(self, fn, uid, gid, dmode, fmode, selabel,
+                              capabilities):
+    """Recursively set path ownership and permissions."""
+    if capabilities is None:
+      capabilities = "0x0"
+    cmd = 'set_metadata_recursive("%s", "uid", %d, "gid", %d, ' \
+        '"dmode", 0%o, "fmode", 0%o' \
+        % (fn, uid, gid, dmode, fmode)
+    if not fn.startswith("/tmp"):
+      cmd += ', "capabilities", "%s"' % capabilities
+    if selabel is not None:
+      cmd += ', "selabel", "%s"' % selabel
+    cmd += ');'
+    self.script.append(cmd)
+
   def WriteRawImage(self, mount_point, fn, mapfn=None):
     """Write the given package file into the partition for the given
     mount point."""
