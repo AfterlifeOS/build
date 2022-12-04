@@ -2952,7 +2952,9 @@ class PasswordManager(object):
               ps = subprocess.Popen(self.secure_storage_cmd, shell=True, stdout=subprocess.PIPE)
               output = ps.communicate()[0]
               if ps.returncode == 0:
-                current[i] = output
+                current[i] = output.decode('utf-8')
+              else:
+                logger.warning('Failed to get password for key "%s".', i)
             except Exception as e:
               print(e)
               pass
