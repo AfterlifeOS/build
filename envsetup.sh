@@ -2112,3 +2112,4 @@ addcompletions
 
 export ANDROID_BUILD_TOP=$(gettop)
 
+. $ANDROID_BUILD_TOP/vendor/afterlife/build/envsetup.sh
