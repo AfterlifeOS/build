@@ -210,7 +210,7 @@ function check_product()
         echo "Couldn't locate the top of the tree.  Try setting TOP." >&2
         return
     fi
-    if (echo -n $1 | grep -q -e "^afterlife_) ; then
+    if (echo -n $1 | grep -q -e "^afterlife_"); then
         AFTERLIFE_BUILD=$(echo -n $1 | sed -e 's/^afterlife_//g')
     else
         AFTERLIFE_BUILD=
