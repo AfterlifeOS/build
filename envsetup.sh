@@ -816,33 +816,22 @@ function lunch()
 
     export TARGET_BUILD_APPS=
 
-    # This must be <product>-<release>-<variant>
-    local product release variant
+    # This must be <product>-<variant>
+    local product variant
     # Split string on the '-' character.
-    IFS="-" read -r product release variant <<< "$selection"
+    IFS="-" read -r product variant <<< "$selection"
 
-    if [[ -z "$product" ]] || [[ -z "$release" ]] || [[ -z "$variant" ]]
+    if [[ -z "$product" ]] || [[ -z "$variant" ]]
     then
         echo
         echo "Invalid lunch combo: $selection"
-        echo "Valid combos must be of the form <product>-<release>-<variant>"
+        echo "Valid combos must be of the form <product>-<variant>"
         return 1
     fi
 
-    if ! check_product $product $release
-    then
-        # if we can't find a product, try to grab it off the LineageOS GitHub
-        T=$(gettop)
-        cd $T > /dev/null
-        vendor/lineage/build/tools/roomservice.py $product
-        cd - > /dev/null
-        check_product $product $release
-    else
-        T=$(gettop)
-        cd $T > /dev/null
-        vendor/lineage/build/tools/roomservice.py $product true
-        cd - > /dev/null
-    fi
+    # Always pick the latest release
+    release=$(grep "BUILD_ID" build/make/core/build_id.mk | tail -1 | cut -d '=' -f 2 | cut -d '.' -f 1 | tr '[:upper:]' '[:lower:]')
+    export TARGET_RELEASE=$release
 
     TARGET_PRODUCT=$product \
     TARGET_BUILD_VARIANT=$variant \
@@ -861,6 +850,8 @@ function lunch()
     export TARGET_RELEASE=$release
     # Note this is the string "release", not the value of the variable.
     export TARGET_BUILD_TYPE=release
+
+    check_product $product
 
     local prebuilt_kernel=$(get_build_var TARGET_PREBUILT_KERNEL)
     if [ -z "$prebuilt_kernel" ]; then
