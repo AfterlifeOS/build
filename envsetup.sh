@@ -838,20 +838,7 @@ function lunch()
         return 1
     fi
 
-    if ! check_product $product $release
-    then
-        # if we can't find a product, try to grab it off the DroidX-UI GitHub
-        T=$(gettop)
-        cd $T > /dev/null
-        vendor/droidx/build/tools/roomservice.py $product
-        cd - > /dev/null
-        check_product $product $release
-    else
-        T=$(gettop)
-        cd $T > /dev/null
-        vendor/droidx/build/tools/roomservice.py $product true
-        cd - > /dev/null
-    fi
+    check_product $product
 
     TARGET_PRODUCT=$product \
     TARGET_BUILD_VARIANT=$variant \
@@ -863,15 +850,6 @@ function lunch()
         then
             echo "Did you mean -${product/*_/}? (dash instead of underscore)"
         fi
-        echo
-        echo "** Don't have a product spec for: '$product'"
-        echo "** Do you have the right repo manifest?"
-        product=
-    fi
-
-    if [ -z "$product" -o -z "$variant" ]
-    then
-        echo
         return 1
     fi
     export TARGET_PRODUCT=$(get_build_var TARGET_PRODUCT)
