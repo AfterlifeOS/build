@@ -219,6 +219,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   build_date = target_info.GetBuildProp("ro.build.date")
   security_patch = target_info.GetBuildProp("ro.build.version.security_patch")
   device = target_info.GetBuildProp("ro.product.device")
+  maintainer = target_info.GetBuildProp("ro.afterlife.maintainer")
 
   script.Print("---------------------------------------------------");
   script.Print("        #   ##  #          #    #   ##             ");
@@ -234,6 +235,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.Print(" Build date       : %s"%(build_date));
   script.Print(" Security patch   : %s"%(security_patch));
   script.Print(" Device           : %s"%(device));
+  script.Print(" Maintainer       : %s"%(maintainer));
   script.Print("===================================================");
 
   device_specific.FullOTA_InstallBegin()
