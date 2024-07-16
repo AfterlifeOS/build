@@ -26,8 +26,8 @@ echo "ro.build.version.min_supported_target_sdk=$PLATFORM_MIN_SUPPORTED_TARGET_S
 echo "ro.build.date=`$DATE`"
 echo "ro.build.date.utc=`$DATE +%s`"
 echo "ro.build.type=$TARGET_BUILD_TYPE"
-echo "ro.build.user=$BUILD_USERNAME"
-echo "ro.build.host=$BUILD_HOSTNAME"
+echo "ro.build.user=developer"
+echo "ro.build.host=afterlife"
 # TODO: Remove any tag-related optional property declarations once the goals
 # from go/arc-android-sigprop-changes have been achieved.
 echo "ro.build.tags?=$BUILD_VERSION_TAGS"
