@@ -214,7 +214,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   # Dump fingerprints
   script.Print("Target: {}".format(target_info.fingerprint))
 
-  android_version = target_info.GetBuildProp("ro.afterlife.version")
+  android_version = target_info.GetBuildProp("ro.build.version.release") + " | " + target_info.GetBuildProp("ro.afterlife.version.extra")
   rom_code = target_info.GetBuildProp("ro.afterlife.version.codename")
   build_date = target_info.GetBuildProp("ro.build.date")
   security_patch = target_info.GetBuildProp("ro.build.version.security_patch")
