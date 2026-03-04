@@ -1365,6 +1365,7 @@ def MergeDynamicPartitionInfoDicts(framework_dict, vendor_dict):
 
 def PartitionMapFromTargetFiles(target_files_dir):
   """Builds a map from partition -> path within an extracted target files directory."""
+  # Keep possible_subdirs in sync with build/make/core/board_config.mk.
   possible_subdirs = {
       "system": ["SYSTEM"],
       "vendor": ["VENDOR", "SYSTEM/vendor"],
@@ -1378,30 +1379,11 @@ def PartitionMapFromTargetFiles(target_files_dir):
       "system_dlkm": ["SYSTEM_DLKM", "SYSTEM/system_dlkm"],
   }
   partition_map = {}
-  
-  is_zip = False
-  namelist = []
-
-  if isinstance(target_files_dir, zipfile.ZipFile):
-    is_zip = True
-    namelist = target_files_dir.namelist()
-  elif isinstance(target_files_dir, str) and zipfile.is_zipfile(target_files_dir):
-    is_zip = True
-    with zipfile.ZipFile(target_files_dir, "r", allowZip64=True) as zfp:
-      namelist = zfp.namelist()
-
   for partition, subdirs in possible_subdirs.items():
     for subdir in subdirs:
-      if is_zip:
-        if subdir in namelist or any(x.startswith(subdir + "/") for x in namelist):
-          partition_map[partition] = subdir
-          break
-      else:
-        if os.path.isdir(target_files_dir):
-          if os.path.exists(os.path.join(target_files_dir, subdir)):
-            partition_map[partition] = subdir
-            break
-            
+      if os.path.exists(os.path.join(target_files_dir, subdir)):
+        partition_map[partition] = subdir
+        break
   return partition_map
 
 
